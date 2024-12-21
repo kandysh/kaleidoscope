@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Checking out web
+        run: cd web
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
