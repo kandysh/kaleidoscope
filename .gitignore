@@ -1,1 +1,3 @@
 .vercel
+credentials.*
+node_modules
