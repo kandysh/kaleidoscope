@@ -7,7 +7,7 @@ const logger = pino();
 const clientOptions: ClientOptions = {
     endPoint: process.env.MINIO_URL as string,
     port: parseInt(process.env.MINIO_PORT as string),
-    useSSL: true,
+    useSSL: false,
     accessKey: process.env.MINIO_ACCESS_KEY as string,
     secretKey: process.env.MINIO_SECRET_KEY as string
 }
@@ -23,6 +23,3 @@ export const createNewBucket = async (bucketName: string) => {
     await minioClient.makeBucket(bucketName);
     logger.info('Bucket %s created successfully', bucketName);
 }
-
-
-

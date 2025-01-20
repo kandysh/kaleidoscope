@@ -1,1 +1,2 @@
-export const IMG_BUCKET = 'IMG_BUCKET';
+export const IMG_BUCKET = 'images';
+export const VID_BUCKET = 'videoes';
