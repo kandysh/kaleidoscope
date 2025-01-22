@@ -1,5 +1,5 @@
 services:
-  # PostgreSQL Database
+  # PostgreSQL Database (No changes needed here)
   db:
     image: postgres:latest
     container_name: kaleidoscope_db
@@ -7,16 +7,16 @@ services:
       - db_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD= password
+      - POSTGRES_PASSWORD=password
       - POSTGRES_DB=kaleidoscope
     ports:
       - "5432:5432"
 
-  # MinIO Storage
+  # MinIO Storage (No changes needed here)
   minio:
     image: minio/minio:latest
     container_name: kaleidoscope_minio
-    command: server /data --console-address ":9001" 
+    command: server /data --console-address ":9001"
     environment:
       - MINIO_ROOT_USER=kaleidoscope
       - MINIO_ROOT_PASSWORD=kaleidoscope@minio123
@@ -26,13 +26,31 @@ services:
       - "9000:9000"
       - "9001:9001"
 
-  # Redis Cache
   redis:
     image: redis:latest
-    container_name: kaleidoscope_redis
+    container_name: redis
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - redis_network
+
+  redis_insight:
+    image: redis/redisinsight:latest
+    container_name: redis_insight
+    ports:
+      - "5540:5540"
+    depends_on:
+      - redis
+    networks:
+      - redis_network
+    command: redisinsight --redis-server redis:6379 # Key change here!
+
+networks:
+  redis_network:
 
 volumes:
   db_data:
   minio_data:
+  redis_data:

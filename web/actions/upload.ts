@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { mediaTable } from "@/lib/db/schema";
 import { createNewBucket, minioClient } from "@/lib/minio";
 import { VID_BUCKET } from "@/lib/minio/buckets";
+import { videoQueue } from "@/lib/mq";
 
 
 export const upload = async (media: typeof mediaTable.$inferInsert) => {
@@ -14,3 +15,8 @@ export const upload = async (media: typeof mediaTable.$inferInsert) => {
 }
 
 export const fetchVideoUrl = async (mediaId: string) => await minioClient.presignedGetObject(VID_BUCKET, mediaId);
+
+
+export const pushToVideoQueue = async (media: typeof mediaTable.$inferSelect) => {
+    await videoQueue.add('uploadSuccess', media);
+}
