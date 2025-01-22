@@ -4,7 +4,7 @@ import pino from 'pino';
 const logger = pino();
 
 
-const clientOptions: ClientOptions = process.env.NODE_ENV === 'production' ? {
+const clientOptions: ClientOptions = process.env.NODE_ENV !== 'development' ? {
     endPoint: process.env.BUCKET_URL as string,
     useSSL: true,
     accessKey: process.env.ACCESS_KEY as string,
