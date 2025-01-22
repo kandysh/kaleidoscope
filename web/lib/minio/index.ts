@@ -4,12 +4,18 @@ import pino from 'pino';
 const logger = pino();
 
 
-const clientOptions: ClientOptions = {
-    endPoint: process.env.MINIO_URL as string,
-    port: parseInt(process.env.MINIO_PORT as string),
+const clientOptions: ClientOptions = process.env.NODE_ENV === 'production' ? {
+    endPoint: process.env.BUCKET_URL as string,
+    useSSL: true,
+    accessKey: process.env.ACCESS_KEY as string,
+    secretKey: process.env.SECRET_KEY as string,
+    region: process.env.BUCKET_REGION as string,
+} : {
+    endPoint: process.env.BUCKET_URL as string,
     useSSL: false,
-    accessKey: process.env.MINIO_ACCESS_KEY as string,
-    secretKey: process.env.MINIO_SECRET_KEY as string
+    port: 9000,
+    accessKey: process.env.ACCESS_KEY as string,
+    secretKey: process.env.SECRET_KEY as string,
 }
 
 export const minioClient = new Client(clientOptions);

@@ -18,6 +18,14 @@ export default function Home() {
       size: file.size
     });
     setMediaId(mediaPreSigned.added[0].insertedId);
+
+    await fetch(mediaPreSigned.presingedUrl, {
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type || 'application/octet-stream'
+      }
+    })
   }
 
   return (

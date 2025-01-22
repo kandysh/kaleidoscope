@@ -1,2 +1,2 @@
 export const IMG_BUCKET = 'images';
-export const VID_BUCKET = 'videoes';
+export const VID_BUCKET = 'kaledioscope-bucket';
