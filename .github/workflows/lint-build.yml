@@ -24,9 +24,6 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
 
-      - name: Install Dependencies
-        run: pnpm install
-
       - name: Run Linter
         run: pnpm lint
 
