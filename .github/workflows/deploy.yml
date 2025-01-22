@@ -21,10 +21,10 @@ jobs:
           version: 9
           run_install: true
       - name: Install dependencies & tooling
-        run: |
+        run:
           pnpm install -g drizzle-orm drizzle-kit pg
       - name: Apply migrations
-        run: drizzle-kit migrate
+        run: drizzle-kit migrate --config=web/drizzle.config.ts
   Deploy-Production:
     runs-on: ubuntu-latest
     steps:
