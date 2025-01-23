@@ -17,6 +17,6 @@ export const upload = async (media: typeof mediaTable.$inferInsert) => {
 export const fetchVideoUrl = async (mediaId: string) => await minioClient.presignedGetObject(VID_BUCKET, mediaId);
 
 
-export const pushToVideoQueue = async (media: typeof mediaTable.$inferSelect) => {
-    await videoQueue.add('uploadSuccess', media);
+export const pushToVideoQueue = async (media: typeof mediaTable.$inferSelect, presignedGetUrl: string) => {
+    await videoQueue.add('uploadSuccess', { ...media, presignedGetUrl });
 }
