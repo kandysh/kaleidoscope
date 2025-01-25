@@ -1,10 +1,12 @@
 "use server";
 import { db } from "@/lib/db";
 import { mediaTable } from "@/lib/db/schema";
-import { createNewBucket, minioClient } from "@/lib/minio";
+import { minioClient } from "@/lib/minio";
 import { VID_BUCKET } from "@/lib/minio/buckets";
-import { videoQueue } from "@/lib/mq";
+import { redisClient } from "@/lib/mq";
+import pino from "pino";
 
+const logger = pino()
 
 export const upload = async (media: typeof mediaTable.$inferInsert) => {
     return await db.transaction(async (tx) => {
@@ -17,6 +19,13 @@ export const upload = async (media: typeof mediaTable.$inferInsert) => {
 export const fetchVideoUrl = async (mediaId: string) => await minioClient.presignedGetObject(VID_BUCKET, mediaId);
 
 
-export const pushToVideoQueue = async (media: typeof mediaTable.$inferSelect, presignedGetUrl: string) => {
-    await videoQueue.add('uploadSuccess', { ...media, presignedGetUrl });
+export const addTaskToProcessQueue = async (media: typeof mediaTable.$inferSelect, presignedGetUrl: string) => {
+    const taskData = {
+        task: 'process-video',
+        args: [{ ...media, presignedGetUrl, uploadTime: new Date().toUTCString() }],
+    };
+
+    await redisClient.rPush('celery', JSON.stringify(taskData));
+
+    logger.info(media, 'Process viode job added')
 }

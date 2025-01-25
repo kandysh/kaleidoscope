@@ -1,6 +1,12 @@
-import { Queue, Worker } from 'bullmq';
-import IORedis from 'ioredis';
+import pino from "pino";
+import { createClient } from "redis";
 
-const connection = new IORedis(process.env.REDIS_URL as string);
+const logger = pino();
+export const redisClient = createClient({
+    url: process.env.REDIS_URL as string
+})
 
-export const videoQueue = new Queue('Video-queue', { connection });
+redisClient.on('error', error => {
+    logger.error(`Redis client error:`, error);
+});
+

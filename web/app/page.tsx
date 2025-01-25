@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchVideoUrl, pushToVideoQueue, upload } from "@/actions/upload";
+import { addTaskToProcessQueue, fetchVideoUrl, upload } from "@/actions/upload";
 import React, { useState } from "react";
 
 export default function Home() {
@@ -28,15 +28,14 @@ export default function Home() {
     })
   }
 
-  async function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    console.log(event);
-    await pushToVideoQueue({
+  async function handleClick() {
+    await addTaskToProcessQueue({
       id: mediaId!,
       name: file!.name,
       type: file!.type,
       size: file!.size,
       lastModiiedDate: new Date(file!.lastModified)
-    });
+    }, mediaUrl!);
   }
 
   return (
