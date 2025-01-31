@@ -1,0 +1,17 @@
+[project]
+name = "workers"
+version = "0.1.0"
+description = "workers of kaleidoscope"
+authors = [
+    {name = "kandysh"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "celery[redis] (>=5.4.0,<6.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

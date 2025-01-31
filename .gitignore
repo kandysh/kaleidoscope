@@ -1,5 +1,12 @@
 .vercel
 credentials.*
+
+#js
 node_modules
 
+#py
+.venv
+
+
+#misc
 resources
